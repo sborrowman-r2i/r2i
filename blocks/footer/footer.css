@@ -1,14 +1,24 @@
-footer {
-  padding: 2rem;
-  background-color: var(--overlay-background-color);
-  font-size: var(--body-font-size-s);
-}
+@layer blocks {
+	.footer-wrapper {
+		background-color: rgb(var(--overlay-background-color));
+		padding: 2rem;
+	}
 
-footer .footer {
-  max-width: 1200px;
-  margin: auto;
-}
+	.footer {
+		max-width:
+			min(
+				calc(100% - calc(var(--section-gutter, var(--gutter-spacing)) * 2)),
+				var(--section-max-width, var(--max-width))
+			);
+		margin-inline: auto;
+	}
 
-footer .footer p {
-  margin: 0;
+	.footer .column-grid > div {
+		display: contents;
+	}
+
+	.footer-links {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
