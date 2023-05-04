@@ -8,9 +8,11 @@
 	.column-image {
 		width: 100%;
 	}
-	
-	.column-image:last-child {
-		grid-row-start: -1;
+
+	@media (max-width: 899px) {
+		.column-image:first-child {
+			order: 1;
+		}
 	}
 	
 	@media (min-width: 900px) {

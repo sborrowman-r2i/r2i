@@ -22,7 +22,7 @@ export default async function decorate(block) {
 		block.append(footer);
 
 		const footerGrid = footer.querySelector('.column-grid > div');
-		const footerColumns = Array.from(footerGrid.children)
+		const footerColumns = [...footerGrid.children]
 		
 		footerColumns.forEach((column, index) => {
 			column.classList.add('column');

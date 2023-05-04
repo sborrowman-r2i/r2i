@@ -230,69 +230,21 @@ export async function fetchPlaceholders(prefix = 'default') {
 export function createAccordion(block) {
 	if (!block.querySelector('ol')) return;
 
-	function getHeight(obj) {
-		const objStyles = window.getComputedStyle(obj);
-		const objDisplay = objStyles.display;
-		const objPosition = objStyles.position;
-		const objVisibility = objStyles.visibility;
-		let wantedHeight = null;
-	
-		obj.style.position = 'absolute';
-		obj.style.visibility = 'hidden';
-		obj.style.display = 'block';
-	
-		wantedHeight = obj.offsetHeight;
-	
-		obj.style.position = objPosition;
-		obj.style.visibility = objVisibility;
-		obj.style.display = objDisplay;
-		
-		return wantedHeight;
-	}
-
-	function slide(obj, callback, animationTime = 300) {
-		const objHeight = obj.offsetHeight;
-		const startingHeight = objHeight === 0 ? 0 : objHeight;
-		const animateHeight = objHeight === 0 ? getHeight(obj) : 0;
-		const endingDisplay = objHeight === 0 ? 'block' : 'none';
-	
-		obj.style.height = `${startingHeight}px`;
-		obj.style.transition = `height ${animationTime}ms ease-out`;
-		obj.style.overflow = 'hidden';
-		obj.style.display = 'block';
-		obj.style.paddingBottom = 0;
-		obj.style.paddingTop = 0;
-	
-		setTimeout(() => {
-			obj.style.height = `${animateHeight}px`;
-		}, 10);
-		setTimeout(() => {
-			const hidden = endingDisplay === 'none';
-			const ariaSetting = hidden ? 'true' : 'false';
-	
-			obj.removeAttribute('style');
-			obj.setAttribute('aria-hidden', ariaSetting);
-	
-			if (hidden) obj.style.display = endingDisplay;
-	
-			if (callback) {
-				callback();
-			}
-		}, animationTime);
-	}
-
 	block.querySelector('ol').classList.add('accordian-group');
-	block.querySelector('ul').classList.add('accordian-dropdown');
-
+	
 	const accordianGroup = block.querySelector('.accordian-group');
-	const accordianGroupChildren = Array.from(accordianGroup.children);
-
+	const accordianGroupChildren = [...accordianGroup.children];
+	
 	accordianGroupChildren.forEach((child) => {
+		if (!child.querySelector('ul')) return;
+
+		child.querySelector('ul').classList.add('accordian-dropdown');
 		const button = document.createElement('button');
 		const buttonIcon = document.createElement('span');
-		const childElements = Array.from(child.children);
+		const childElements = [...child.children];
 		const buttonElements = childElements.filter((element) => !element.classList.contains('accordian-dropdown'));
 		const accordianDropdown = child.querySelector('.accordian-dropdown');
+		const dropdownLinks = [...accordianDropdown.querySelectorAll('a')];
 
 		button.setAttribute('type', 'button');
 		button.setAttribute('aria-expanded', 'false');
@@ -302,11 +254,26 @@ export function createAccordion(block) {
 
 		if (accordianDropdown) accordianDropdown.setAttribute('aria-hidden', 'true');
 
-		button.addEventListener('click', () => {
-			const setAttribute = button.getAttribute('aria-expanded') === 'true' ? 'false' : 'true';
+		if (dropdownLinks.length > 0) {
+			const linkContainer = document.createElement('div');
+			linkContainer.classList.add('accordian-link-container');
 
-			button.setAttribute('aria-expanded', setAttribute);
-			// if (accordianDropdown) slide(accordianDropdown);
+			dropdownLinks.forEach((link, index) => {
+				const buttonClass = index === 0 ? 'button-primary' : 'button-secondary';
+
+				link.classList.add('button', buttonClass);
+				linkContainer.append(link);
+			});
+
+			child.querySelector('li').append(linkContainer);
+		}
+
+		button.addEventListener('click', () => {
+			const setButtonAttribute = button.getAttribute('aria-expanded') === 'true' ? 'false' : 'true';
+			const setDropdownAttribute = accordianDropdown.getAttribute('aria-hidden') === 'true' ? 'false' : 'true';
+
+			button.setAttribute('aria-expanded', setButtonAttribute);
+			accordianDropdown.setAttribute('aria-hidden', setDropdownAttribute);
 		});
 	});
 
@@ -620,20 +587,24 @@ export function decorateButtons(element) {
 		if (a.href !== a.textContent) {
 			const up = a.parentElement;
 			const twoup = a.parentElement.parentElement;
+			const icon = document.createElement('span');
 			if (!a.querySelector('img')) {
 				if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
 					a.className = 'button button-primary'; // default
 					up.classList.add('button-container');
+					if (!a.closest('.nav-tools')) a.prepend(icon);
 				}
 				if (up.childNodes.length === 1 && up.tagName === 'STRONG'
 					&& twoup.childNodes.length === 1 && twoup.tagName === 'P') {
 					a.className = 'button button-primary';
 					twoup.classList.add('button-container');
+					if (!a.closest('.nav-tools')) a.prepend(icon);
 				}
 				if (up.childNodes.length === 1 && up.tagName === 'EM'
 					&& twoup.childNodes.length === 1 && twoup.tagName === 'P') {
 					a.className = 'button button-secondary';
 					twoup.classList.add('button-container');
+					if (!a.closest('.nav-tools')) a.prepend(icon);
 				}
 			}
 		}

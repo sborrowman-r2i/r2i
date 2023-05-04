@@ -1,10 +1,13 @@
 @layer blocks {
 	.footer-wrapper {
-		background-color: rgb(var(--overlay-background-color));
-		padding: 2rem;
+		--link-color: 255 255 255;
+		
+		background: linear-gradient(180deg, rgb(33 36 59) 0%, rgb(0 0 0) 100%);
+		padding-block: 11.6rem;
 	}
 
 	.footer {
+		color: rgb(var(--link-color));
 		max-width:
 			min(
 				calc(100% - calc(var(--section-gutter, var(--gutter-spacing)) * 2)),
