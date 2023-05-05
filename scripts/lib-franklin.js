@@ -246,6 +246,7 @@ export function createAccordion(block) {
 		const accordianDropdown = child.querySelector('.accordian-dropdown');
 		const dropdownLinks = [...accordianDropdown.querySelectorAll('a')];
 
+		accordianDropdown.inert = true;
 		button.setAttribute('type', 'button');
 		button.setAttribute('aria-expanded', 'false');
 		buttonElements.forEach((element) => button.append(element));
@@ -271,8 +272,10 @@ export function createAccordion(block) {
 		button.addEventListener('click', () => {
 			const setButtonAttribute = button.getAttribute('aria-expanded') === 'true' ? 'false' : 'true';
 			const setDropdownAttribute = accordianDropdown.getAttribute('aria-hidden') === 'true' ? 'false' : 'true';
+			const isOpen = button.getAttribute('aria-expanded') === 'true';
 
 			button.setAttribute('aria-expanded', setButtonAttribute);
+			accordianDropdown.inert = isOpen === true;
 			accordianDropdown.setAttribute('aria-hidden', setDropdownAttribute);
 		});
 	});

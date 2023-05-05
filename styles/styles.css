@@ -167,7 +167,6 @@
 
 	a:active,
 	a:focus {
-		color: inherit;
 		outline: 0;
 	}
 
@@ -409,6 +408,7 @@
 		gap: 2rem;
 		padding: 1.6rem 2.4rem 1.6rem 1.6rem;
 		text-align: left;
+		transition: border-color 300ms ease-in-out;
 		width: 100%;
 	}
 
@@ -419,6 +419,10 @@
 	.accordian-group button[aria-expanded='true'] {
 		--icon-color: 124 152 171;
 		--icon-opacity: 0;
+	}
+
+	.accordian-group li:last-child button[aria-expanded='false'] {
+		border-color: transparent;
 	}
 
 	.accordian-group picture,
