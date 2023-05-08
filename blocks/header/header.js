@@ -10,9 +10,9 @@ const isDesktop = window.matchMedia('(min-width: 900px)');
  */
 function toggleMenu(nav) {
 	const button = nav.querySelector('.nav-hamburger button');
-	const expanded = button.getAttribute('aria-expanded') === 'true';
+	const expanded = nav.getAttribute('aria-expanded') === 'true';
 	document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
-	button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+	nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
 	button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
 }
 

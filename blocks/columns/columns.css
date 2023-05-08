@@ -1,6 +1,6 @@
 @layer blocks {
 	.column-grid {
-		align-items: center;
+		align-items: var(--column-align, center);
 		display: grid;
 		gap: var(--column-gap);
 	}

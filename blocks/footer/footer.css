@@ -1,6 +1,7 @@
 @layer blocks {
 	.footer-wrapper {
 		--link-color: 255 255 255;
+		--column-align: start;
 		
 		background: linear-gradient(180deg, rgb(33 36 59) 0%, rgb(0 0 0) 100%);
 		padding-block: 11.6rem;
@@ -23,5 +24,32 @@
 	.footer-links {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.footer-links ul::before {
+		background: linear-gradient(90deg, rgba(var(--title-gradient-color-start)) 0%, rgba(var(--title-gradient-color-end)) 100%);
+		content: '';
+		display: block;
+		height: var(--title-bar-height);
+		margin-block-end: 2.4rem;
+		width: var(--title-bar-width);
+	}
+
+	.footer-links a {
+		font-size: 2rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	@media (max-width: 899px) {
+		.footer-links {
+			order: -1;
+		}
+	}
+
+	@media (min-width: 900px) {
+		.footer-links a {
+			font-size: 3.2rem;
+		}
 	}
 }

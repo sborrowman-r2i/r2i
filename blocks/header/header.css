@@ -2,6 +2,7 @@
 	.header-wrapper {
 		background-color: rgb(var(--primary-background-color));
 		padding-block: 1.6rem;
+		position: relative;
 	}
 
 	.header {
@@ -21,11 +22,6 @@
 
 	.nav-brand {
 		max-width: 20rem;
-	}
-
-	.nav-sections ul {
-		display: flex;
-		gap: 2rem;
 	}
 
 	.nav-sections a {
@@ -67,25 +63,25 @@
 		transition: opacity 300ms ease-in-out 300ms, translate 300ms ease-in-out 300ms;
 	}
 	
-	.nav-hamburger button[aria-expanded='true'] {
+	[aria-expanded='true'] .nav-hamburger button {
 		--hamburger-move: .7rem;
 	}
 
-	.nav-hamburger button[aria-expanded='true'] .nav-hamburger-icon {
+	[aria-expanded='true'] .nav-hamburger button .nav-hamburger-icon {
 		transition: rotate 300ms ease-in-out 300ms;
 	}
 	
-	.nav-hamburger button[aria-expanded='true'] .nav-hamburger-icon {
+	[aria-expanded='true'] .nav-hamburger button .nav-hamburger-icon {
 		rotate: -45deg;
 	}
 	
-	.nav-hamburger button[aria-expanded='true']::before {
+	[aria-expanded='true'] .nav-hamburger button::before {
 		transition: translate 300ms ease-in-out, rotate 300ms ease-in-out 300ms;
 		translate: 0 var(--hamburger-move);
 		rotate: 45deg;
 	}
 	
-	.nav-hamburger button[aria-expanded='true']::after {
+	[aria-expanded='true'] .nav-hamburger button::after {
 		opacity: 0;
 		translate: 0 calc(var(--hamburger-move) * -1);
 		transition: translate 300ms ease-in-out;
@@ -93,18 +89,49 @@
 	}
 
 	@media (max-width: 899px) {
+		.nav-wrapper nav[aria-expanded='true'] {
+			--dropdown-height: 1fr;
+		}
+
 		.nav-brand {
 			margin-inline-end: auto;
 		}
 
 		.nav-sections {
-			display: none;
+			background-color: rgb(245 251 255);
+			display: grid;
+			grid-template-rows: var(--dropdown-height, 0fr);
+			left: 0;
+			pointer-events: none;
+			position: absolute;
+			transition: grid-template-rows 300ms ease-in-out;
+			top: 100%;
+			width: 100%;
+			z-index: 1;
+		}
+
+		.nav-sections ul {
+			overflow: hidden;
+		}
+
+		.nav-sections li {
+			border-block-end: .1rem solid rgb(210 220 230);
+		}
+
+		.nav-sections a {
+			display: block;
+			padding: 1.6rem 2rem;
 		}
 	}
 
 	@media (min-width: 900px) {
 		.nav-wrapper nav {
 			justify-content: space-between;
+		}
+
+		.nav-sections ul {
+			display: flex;
+			gap: 2rem;
 		}
 
 		.nav-hamburger {
