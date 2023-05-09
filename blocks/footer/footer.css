@@ -41,6 +41,11 @@
 		text-decoration: none;
 	}
 
+	.footer img {
+		max-width: 12rem;
+		margin-block-start: 8rem;
+	}
+
 	@media (max-width: 899px) {
 		.footer-links {
 			order: -1;
@@ -50,6 +55,11 @@
 	@media (min-width: 900px) {
 		.footer-links a {
 			font-size: 3.2rem;
+		}
+
+		.footer img {
+			max-width: 22.3rem;
+			margin-block-start: 10rem;
 		}
 	}
 }

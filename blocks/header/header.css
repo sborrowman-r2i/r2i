@@ -110,6 +110,10 @@
 			z-index: 1;
 		}
 
+		[aria-expanded='true'] .nav-sections {
+			pointer-events: auto;
+		}
+
 		.nav-sections ul {
 			overflow: hidden;
 		}

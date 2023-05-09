@@ -8,12 +8,20 @@ const isDesktop = window.matchMedia('(min-width: 900px)');
  * @param {Element} nav The container element
  * @param {*} forceExpanded Optional param to force nav expand behavior when not null
  */
+function setMenu(nav, windowMatch) {
+	const navSection = nav.querySelector('.nav-sections');
+
+	navSection.inert = windowMatch === false;
+}
+
 function toggleMenu(nav) {
+	const navSection = nav.querySelector('.nav-sections');
 	const button = nav.querySelector('.nav-hamburger button');
 	const expanded = nav.getAttribute('aria-expanded') === 'true';
-	document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
+
 	nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
 	button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
+	navSection.inert = expanded === true;
 }
 
 /**
@@ -52,6 +60,8 @@ export default async function decorate(block) {
 						top: jumpLocation.offsetTop,
 						behavior: 'smooth',
 					});
+
+					if (!isDesktop.matches) toggleMenu(block.querySelector('nav'));
 				});
 			});
 		}
@@ -59,19 +69,22 @@ export default async function decorate(block) {
 		const navTools = nav.querySelector('.nav-tools');
 		if (navTools) decorateButtons(navTools);
 
+		
 		// hamburger for mobile
 		const hamburger = document.createElement('div');
 		hamburger.classList.add('nav-hamburger');
 		hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-				<span class="nav-hamburger-icon"></span>
-			</button>`;
+		<span class="nav-hamburger-icon"></span>
+		</button>`;
 		hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
 		nav.append(hamburger);
 		hamburger.querySelector('button').setAttribute('aria-expanded', 'false');
-
+		isDesktop.addEventListener('change', () => setMenu(block, isDesktop.matches));
+		
 		const navWrapper = document.createElement('div');
 		navWrapper.className = 'nav-wrapper';
 		navWrapper.append(nav);
 		block.append(navWrapper);
+		setMenu(block, isDesktop.matches);
 	}
 }
